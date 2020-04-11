@@ -11,7 +11,7 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# Update operations
+
 function perform_updates() {
     echo "Updating zsh-async..."
     cd ~/.zsh-async/ && git fetch && git pull
@@ -20,36 +20,54 @@ function perform_updates() {
     echo "Updating nvm..."
     cd ~/.nvm/ && git fetch && git pull
     echo "Done."
+}
+
+function terminate_updates() {
+    echo "\nThe zsh environment is up to date."
+    echo "Next check: $(date -d "+14 days")"
+
     echo "$(date +%s)" > ~/.zsh-update
 
     cd ~
 }
 
-if [ -f ~/.zsh-update ]; then
-    LAST_UPDATE_TIME=$(cat ~/.zsh-update)
-else
-    LAST_UPDATE_TIME=0
-    echo "$LAST_UPDATE_TIME" > ~/.zsh-update
-fi
-CURRENT_TIMESTAMP=$(date +%s)
-(( TIME_SINCE_UPDATE = ($CURRENT_TIMESTAMP - $LAST_UPDATE_TIME) / 60 / 60 ))
-if [ $TIME_SINCE_UPDATE -gt 336 ]; then
-    echo "Do you wish to update the zsh environment?"
-    while true; do
-        read ANSWER
-        case $ANSWER in
-            [Yy]|yes )
-                perform_updates
-                ;;
-            [Nn]|no )
-                ;;
-            * )
-                echo "Please answer yes or no."
-                read ANSWER
-                ;;
-        esac
-    done
-fi
+function check_for_updates() {
+    if [ -f ~/.zsh-update ]; then
+        LAST_UPDATE_TIME=$(cat ~/.zsh-update)
+    else
+        LAST_UPDATE_TIME=0
+        echo "$LAST_UPDATE_TIME" > ~/.zsh-update
+    fi
+
+    CURRENT_TIMESTAMP=$(date +%s)
+    (( TIME_SINCE_UPDATE = ($CURRENT_TIMESTAMP - $LAST_UPDATE_TIME) / 60 / 60 ))
+
+    if [ $TIME_SINCE_UPDATE -gt 336 ]; then
+        echo "Do you wish to update the zsh environment?"
+
+        ANSWER=""
+        while test -z $ANSWER; do
+            read ANSWER
+
+            case $ANSWER in
+                [Yy]|yes )
+                    perform_updates
+                    terminate_updates
+                    ;;
+                [Nn]|no )
+                    terminate_updates
+                    ;;
+                * )
+                    echo "Please answer yes or no."
+                    ANSWER=""
+                    ;;
+            esac
+        done
+    fi
+}
+
+# Prompt for environment updates
+check_for_updates
 
 # Source zsh-async
 source ~/.zsh-async/async.zsh
