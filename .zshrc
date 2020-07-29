@@ -13,14 +13,19 @@ compinit
 
 
 function perform_updates() {
+    INITIAL_DIRECTORY=$(pwd)
+
     echo "Updating zsh-async..."
     cd ~/.zsh-async/ && git fetch && git pull
     echo "Updating powerlevel10k..."
     cd ~/.powerlevel10k/ && git fetch && git pull
     echo "Updating nvm..."
     cd ~/.nvm/ && git fetch && git pull
-    echo "Done."
+
+    cd $INITIAL_DIRECTORY
+    echo "\nDone."
 }
+alias update-zsh-env='perform_updates'
 
 function terminate_updates() {
     echo "\nThe zsh environment is up to date."
@@ -77,7 +82,7 @@ source ~/.powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Enable color support of ls and also add handy aliases
+# Configure styles and aliases for ls
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
