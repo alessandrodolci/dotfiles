@@ -12,14 +12,20 @@ compinit
 # End of lines added by compinstall
 
 
+function print_info() {
+    tput bold
+    echo "$1"
+    tput sgr0
+}
+
 function perform_updates() {
     INITIAL_DIRECTORY=$(pwd)
 
-    echo "Updating zsh-async..."
+    print_info "\nUpdating zsh-async..."
     cd ~/.zsh-async/ && git fetch && git pull
-    echo "Updating powerlevel10k..."
+    print_info "Updating powerlevel10k..."
     cd ~/.powerlevel10k/ && git fetch && git pull
-    echo "Updating nvm..."
+    print_info "Updating nvm..."
     cd ~/.nvm/ && git fetch && git pull
 
     cd $INITIAL_DIRECTORY
@@ -28,8 +34,8 @@ function perform_updates() {
 alias update-zsh-env='perform_updates'
 
 function terminate_updates() {
-    echo "\nThe zsh environment is up to date."
-    echo "Next check: $(date -d "+14 days")"
+    print_info "\nThe zsh environment is up to date."
+    print_info "Next check: $(date -d "+14 days")"
 
     echo "$(date +%s)" > ~/.zsh-update
 
@@ -48,7 +54,7 @@ function check_for_updates() {
     (( TIME_SINCE_UPDATE = ($CURRENT_TIMESTAMP - $LAST_UPDATE_TIME) / 60 / 60 ))
 
     if [ $TIME_SINCE_UPDATE -gt 336 ]; then
-        echo "Do you wish to update the zsh environment?"
+        print_info "Do you wish to update the zsh environment? [y/n]"
 
         ANSWER=""
         while test -z $ANSWER; do
@@ -63,7 +69,7 @@ function check_for_updates() {
                     terminate_updates
                     ;;
                 * )
-                    echo "Please answer yes or no."
+                    print_info "Please answer yes or no."
                     ANSWER=""
                     ;;
             esac
