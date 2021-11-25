@@ -38,8 +38,6 @@ function terminate_updates() {
     print_info "Next check: $(date -d "+14 days")"
 
     echo "$(date +%s)" > ~/.zsh-update
-
-    cd ~
 }
 
 function check_for_updates() {
