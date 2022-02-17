@@ -26,7 +26,6 @@ function install_modules() {
     INITIAL_DIRECTORY=$(pwd)
     cd ~
 
-    clone_from_github "mafredri/zsh-async" ".zsh-async"
     clone_from_github "romkatv/powerlevel10k" ".powerlevel10k"
     clone_from_github "nvm-sh/nvm" ".nvm"
 
@@ -35,7 +34,6 @@ function install_modules() {
 }
 
 print_info "The following modules will be installed:\n"
-echo -e "mafredri/zsh-async"
 echo -e "romkatv/powerlevel10k"
 echo -e "nvm-sh/nvm"
 print_info "\nDo you want to continue? [y/n]"

@@ -21,8 +21,6 @@ function print_info() {
 function perform_updates() {
     INITIAL_DIRECTORY=$(pwd)
 
-    print_info "\nUpdating zsh-async..."
-    cd ~/.zsh-async/ && git fetch && git pull
     print_info "Updating powerlevel10k..."
     cd ~/.powerlevel10k/ && git fetch && git pull
     print_info "Updating nvm..."
@@ -78,8 +76,12 @@ function check_for_updates() {
 # Prompt for environment updates
 check_for_updates
 
-# Source zsh-async
-source ~/.zsh-async/async.zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # Enable powerlevel10k theme
 source ~/.powerlevel10k/powerlevel10k.zsh-theme
@@ -106,12 +108,10 @@ bindkey "^[[1;5D" backward-word
 # Enable case-insensitive completion
 zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
 
-# Asynchronously source nvm
+# Source nvm
 export NVM_DIR="$HOME/.nvm"
 function load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
-async_start_worker nvm_worker -n
-async_register_callback nvm_worker load_nvm
-async_job nvm_worker sleep 0.1
+load_nvm
