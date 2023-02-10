@@ -104,6 +104,7 @@ fi
 # Bind keys
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+bindkey "^F" history-incremental-search-forward
 
 # Enable case-insensitive completion
 zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
