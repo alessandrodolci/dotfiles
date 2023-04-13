@@ -109,6 +109,9 @@ bindkey "^F" history-incremental-search-forward
 # Enable case-insensitive completion
 zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
 
+# Enable kubectl completion
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
 # Source nvm
 export NVM_DIR="$HOME/.nvm"
 function load_nvm() {
