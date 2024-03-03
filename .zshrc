@@ -2,8 +2,8 @@ fpath+=~/.zfunc
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=100000
+SAVEHIST=100000
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
@@ -21,14 +21,11 @@ function print_info() {
 }
 
 function perform_updates() {
-    INITIAL_DIRECTORY=$(pwd)
-
     print_info "Updating powerlevel10k..."
-    cd ~/.powerlevel10k/ && git fetch && git pull
+    git -C ~/.powerlevel10k pull
     print_info "Updating nvm..."
-    cd ~/.nvm/ && git fetch && git pull
+    git -C ~/.nvm pull
 
-    cd $INITIAL_DIRECTORY
     echo "\nDone."
 }
 alias update-zsh-env='perform_updates'
@@ -113,6 +110,9 @@ zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
 
 # Enable kubectl completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# Define alias for Laravel Sail binary
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 # Source nvm
 export NVM_DIR="$HOME/.nvm"
