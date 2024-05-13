@@ -1,3 +1,5 @@
+source ~/.zsh-defer/zsh-defer.plugin.zsh
+
 fpath+=~/.zfunc
 
 # Lines configured by zsh-newuser-install
@@ -23,6 +25,8 @@ function print_info() {
 function perform_updates() {
     print_info "Updating powerlevel10k..."
     git -C ~/.powerlevel10k pull
+    print_info "Updating zsh-defer..."
+    git -C ~/.zsh-defer pull
     print_info "Updating nvm..."
     git -C ~/.nvm pull
 
@@ -49,7 +53,7 @@ function check_for_updates() {
     (( TIME_SINCE_UPDATE = ($CURRENT_TIMESTAMP - $LAST_UPDATE_TIME) / 60 / 60 ))
 
     if [ $TIME_SINCE_UPDATE -gt 336 ]; then
-        print_info "Do you wish to update the zsh environment? [y/n]"
+        print_info "Do you want to update the zsh environment? [y/n]"
 
         ANSWER=""
         while test -z $ANSWER; do
@@ -72,8 +76,8 @@ function check_for_updates() {
     fi
 }
 
-# Prompt for environment updates
-check_for_updates
+# Configure default prompt
+PS1="%F{#259C65}%B%~%f $%b "
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -106,13 +110,13 @@ bindkey "^[[1;5D" backward-word
 bindkey "^F" history-incremental-search-forward
 
 # Enable case-insensitive completion
-zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # Enable kubectl completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
 # Define alias for Laravel Sail binary
-alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
+alias sail='$([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 # Source nvm
 export NVM_DIR="$HOME/.nvm"
@@ -120,4 +124,4 @@ function load_nvm() {
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 }
-load_nvm
+zsh-defer load_nvm
