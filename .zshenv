@@ -32,8 +32,5 @@ if [ -d $JETBRAINS_TOOLBOX_PATH ]; then
     path+=($JETBRAINS_TOOLBOX_PATH)
 fi
 
-# Enable Firefox Wayland support
-export MOZ_ENABLE_WAYLAND=1
-
 # Enforce AWS default profile setting
 export AWS_PROFILE=alessandro
