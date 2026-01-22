@@ -113,8 +113,12 @@ bindkey "^F" history-incremental-search-forward
 # Enable case-insensitive completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# Enable kubectl completion
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+# Enable kubectl completion and cache it to a local file
+KUBECTL_COMPLETION_FILE_PATH=~/.kubectl-completion
+if [ ! -f ${KUBECTL_COMPLETION_FILE_PATH} ]; then
+    kubectl completion zsh > ${KUBECTL_COMPLETION_FILE_PATH}
+fi
+[[ $commands[kubectl] ]] && source ${KUBECTL_COMPLETION_FILE_PATH}
 
 # Define alias for Laravel Sail binary
 alias sail='$([ -f sail ] && echo sail || echo vendor/bin/sail)'
