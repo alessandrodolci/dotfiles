@@ -14,18 +14,6 @@ if [ -d $PLAY2_PATH ]; then
     path+=($PLAY2_PATH)
 fi
 
-# Configure PATH to include Sencha Cmd path if it exists
-SENCHA_CMD_PATH="$HOME/.local/bin/Sencha/Cmd/7.0.0.40"
-if [ -d $SENCHA_CMD_PATH ]; then
-    path+=($SENCHA_CMD_PATH)
-fi
-
-# Configure PATH to include JMeter path if it exists
-JMETER_PATH="$HOME/.local/bin/apache-jmeter-5.4.1/bin"
-if [ -d $JMETER_PATH ]; then
-    path+=($JMETER_PATH)
-fi
-
 # Configure PATH to include JetBrains Toolbox
 JETBRAINS_TOOLBOX_PATH="$HOME/.local/share/JetBrains/Toolbox/scripts"
 if [ -d $JETBRAINS_TOOLBOX_PATH ]; then
